@@ -1,8 +1,13 @@
 // App.tsx
-import React, { useState, useEffect } from 'react';
-import { getTasks, createTask, updateTask, deleteTask } from './services/taskService';
-import TaskList from './components/TaskList';
-import TaskForm from './components/TaskForm';
+import React, { useState, useEffect } from "react";
+import {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask,
+} from "./services/taskService";
+import TaskList from "./components/TaskList";
+import TaskForm from "./components/TaskForm";
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState([]);
@@ -13,7 +18,7 @@ const App: React.FC = () => {
         const tasks = await getTasks();
         setTasks(tasks);
       } catch (error) {
-        console.error('Error fetching tasks in useEffect:', error);
+        console.error("Error fetching tasks in useEffect:", error);
         // Consider displaying an error message to the user
       }
     };
@@ -32,7 +37,7 @@ const App: React.FC = () => {
   const handleUpdateTask = async (updatedTask: any) => {
     try {
       const updated = await updateTask(updatedTask.id, updatedTask);
-      setTasks(tasks.map(t => (t.id === updated.id ? updated : t)));
+      setTasks(tasks.map((t) => (t.id === updated.id ? updated : t)));
     } catch (error) {
       // Handle error
     }
@@ -41,7 +46,7 @@ const App: React.FC = () => {
   const handleDeleteTask = async (id: number) => {
     try {
       await deleteTask(id);
-      setTasks(tasks.filter(task => task.id !== id));
+      setTasks(tasks.filter((task) => task.id !== id));
     } catch (error) {
       // Handle error
     }
@@ -49,7 +54,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>Task Manager</h1>
+      <h1 class="text-slate-500">Task Manager</h1>
       <TaskForm onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} />
       <TaskList
         tasks={tasks}

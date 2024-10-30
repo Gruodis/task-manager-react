@@ -44,8 +44,8 @@ const TaskForm: React.FC<TaskFormProps> = ({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
+    <form className="text-slate-300 grid gap-2" onSubmit={handleSubmit}>
+      <div className="grid">
         <label htmlFor="title">Title:</label>
         <input
           type="text"
@@ -55,7 +55,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
           required
         />
       </div>
-      <div>
+      <div className="grid">
         <label htmlFor="description">Description:</label>
         <textarea
           id="description"
