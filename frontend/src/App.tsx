@@ -1,4 +1,4 @@
-// App.tsx
+// src/App.tsx
 import React, { useState, useEffect } from "react";
 import {
   getTasks,
@@ -9,8 +9,16 @@ import {
 import TaskList from "./components/TaskList";
 import TaskForm from "./components/TaskForm";
 
+interface Task {
+  // Define the Task interface
+  id?: number;
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]); // Initialize with Task[] type
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -19,13 +27,13 @@ const App: React.FC = () => {
         setTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks in useEffect:", error);
-        // Consider displaying an error message to the user
       }
     };
     fetchTasks();
   }, []);
 
-  const handleAddTask = async (newTask: any) => {
+  const handleAddTask = async (newTask: Task) => {
+    // Use Task type
     try {
       const createdTask = await createTask(newTask);
       setTasks([...tasks, createdTask]);
@@ -34,10 +42,16 @@ const App: React.FC = () => {
     }
   };
 
-  const handleUpdateTask = async (updatedTask: any) => {
+  const handleUpdateTask = async (updatedTask: Task) => {
     try {
-      const updated = await updateTask(updatedTask.id, updatedTask);
-      setTasks(tasks.map((t) => (t.id === updated.id ? updated : t)));
+      if (updatedTask.id !== undefined) {
+        // Check if id exists
+        const updated = await updateTask(updatedTask.id, updatedTask);
+        setTasks(tasks.map((t) => (t.id === updated.id ? updated : t)));
+      } else {
+        // Handle the case where id is undefined (e.g., show an error)
+        console.error("Cannot update task without an ID.");
+      }
     } catch (error) {
       // Handle error
     }
@@ -54,7 +68,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1 class="text-slate-500">Task Manager</h1>
+      <h1 className="text-slate-500">Task Manager</h1> {/* Use className */}
       <TaskForm onAddTask={handleAddTask} onUpdateTask={handleUpdateTask} />
       <TaskList
         tasks={tasks}
