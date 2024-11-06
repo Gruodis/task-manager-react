@@ -1,9 +1,16 @@
-// taskService.ts
+// src/services/taskService.ts
 import axios from "axios";
 
 const apiUrl = "http://localhost:3001/api/tasks";
 
-export const getTasks = async () => {
+export interface Task {
+  id?: number;
+  title: string;
+  description: string;
+  completed: boolean;
+}
+
+export const getTasks = async (): Promise<Task[]> => {
   try {
     const response = await axios.get(apiUrl);
     return response.data;
@@ -13,8 +20,7 @@ export const getTasks = async () => {
   }
 };
 
-export const createTask = async (task: any) => {
-  // You might want to define a Task type
+export const createTask = async (task: Task): Promise<Task> => {
   try {
     const response = await axios.post(apiUrl, task);
     return response.data;
@@ -24,7 +30,7 @@ export const createTask = async (task: any) => {
   }
 };
 
-export const updateTask = async (id: number, task: any) => {
+export const updateTask = async (id: number, task: Task): Promise<Task> => {
   try {
     const response = await axios.put(`${apiUrl}/${id}`, task);
     return response.data;
@@ -34,7 +40,7 @@ export const updateTask = async (id: number, task: any) => {
   }
 };
 
-export const deleteTask = async (id: number) => {
+export const deleteTask = async (id: number): Promise<void> => {
   try {
     await axios.delete(`${apiUrl}/${id}`);
   } catch (error) {
